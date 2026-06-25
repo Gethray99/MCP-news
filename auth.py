@@ -30,10 +30,12 @@ scalekit_client = ScalekitClient(
 class AuthMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         if request.url.path.startswith("/.well-known/"):
+            logger.info("Inside ./well-known section.")
             return await call_next(request)
 
         try:
             auth_header = request.headers.get("Authorization")
+            logger.info(f"Auth Header: {auth_header}")
             if not auth_header or not auth_header.startswith("Bearer "):
                 
                 raise HTTPException(status_code=401, detail=f"Missing or invalid authorization header")
