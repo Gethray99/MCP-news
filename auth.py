@@ -69,6 +69,7 @@ class AuthMiddleware(BaseHTTPMiddleware):
                 raise HTTPException(status_code=401, detail="Token validation failed")
 
         except HTTPException as e:
+            logger.info(f"Error details: {e}")
             return JSONResponse(
                 status_code=e.status_code,
                 content={"error": "unauthorized" if e.status_code == 401 else "forbidden", "error_description": e.detail},
